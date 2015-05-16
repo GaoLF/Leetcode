@@ -4,6 +4,7 @@
 #include <cctype>
 #include<algorithm>
 #include<math.h>
+#include<unordered_map>
 using namespace std ;
 typedef struct ListNode{
 	int val;
@@ -12,29 +13,52 @@ typedef struct ListNode{
 class Solution {
 public:
     int longestConsecutive(vector<int> &num) {
-    	if(num.size()==0)
+		unordered_map<int,int> map;
+		unordered_map<int,int>::iterator iter,temp_iter;
+		int i,j,m,res=1,temp;
+		if(!num.size())
 			return 0;
-        int res=0,i,j;
-		int min_val=num[0];
-		int max_val=num[0];
-		int flag[65536]={0};
-		for(i=0;i<num.size();i++){
-			min_val=min(min_val,num[i]);
-			max_val=max(max_val,num[i]);
-		} 
-		for(i=0;i<num.size();i++){
-			flag[num[i]-min_val]=1;
+		for(m=0;m<num.size();m++){
+			temp=num[m];
+			map.insert(make_pair(temp,0)); 
 		}
-		for(i=min_val,j=i;i<=max_val;i++){
-			if(flag[i-min_val]==0&&(flag[i-min_val+1]==1)){
-				j=++i;
+		for(iter=map.begin();iter!=map.end();iter++){
+		//	cout<<"!"<<iter->first<<endl; 
+			int size=map.size();
+			int foo,bar;
+			foo=iter->first;
+			bar=iter->second;
+			
+		
+			if(bar){
+			//	cout<<iter->first<<" "<<iter->second<<"~"<<endl;
+				continue;
 			}
-			if(flag[i-min_val]){
-				res=max(res,i-j+1);	
+	
+			for(i=1;i-1<size;i++){
+				temp_iter=map.find(foo+i);
+			//	cout<<"!!"<<foo+i<<endl;
+				if(temp_iter!=map.end()){
+					bar=temp_iter->second;
+					if(bar){
+						for(j=0;j<i;j++){
+							temp_iter=map.find(foo+j);
+							temp_iter->second=i-j+bar;
+						}
+						break;
+					}	
+				}
+				else{
+					for(j=0;j<i;j++){
+						temp_iter=map.find(foo+j);
+						temp_iter->second=(i-j);
+					}
+					break;
+				}
 			}
-
+			res=max(iter->second,res);
+//			cout<<iter->first<<" "<<iter->second<<"~"<<endl;
 		}
-//		cout<<min_val<<endl<<max_val<<endl;
 		return res;
     }
 
@@ -42,11 +66,11 @@ public:
     {
     	vector<int> A;
     	vector<int> B;
-    	A.push_back(4);
-    	A.push_back(2);
-    	A.push_back(5);
-    	cout<<longestConsecutive(A)<<endl;
     	A.push_back(3);
+    	A.push_back(2);
+    	A.push_back(1);
+    //	cout<<longestConsecutive(A)<<endl;
+    //	A.push_back(3);
     	cout<<longestConsecutive(A)<<endl;
     	A.push_back(6);
     	cout<<longestConsecutive(A)<<endl;
