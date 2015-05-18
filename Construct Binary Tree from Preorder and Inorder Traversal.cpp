@@ -9,52 +9,52 @@ typedef struct ListNode{
 	int val;
 	ListNode * next;
 } ListNode;
-
  struct TreeNode {
-     int val;
-     TreeNode *left;
-     TreeNode *right;
-     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- };
-
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+  };
 class Solution {
 public:
-    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
     	
-        return build(inorder,postorder,0,inorder.size()-1,0,inorder.size()-1);
+        return build(preorder,inorder,0,preorder.size()-1,0,preorder.size()-1);
     }
-    TreeNode* build(vector<int>& in, vector<int> & post, int in_begin, int in_end,int post_begin, int post_end){
+    TreeNode* build(vector<int>& pre, vector<int> & in, int pre_begin, int pre_end,int in_begin, int in_end){
     	//int size;
     	int i;
     	int temp;
     	TreeNode *node;
     	
-    	if(in_begin>in_end)
+    	if(pre_begin>pre_end)
     		return NULL;
     //	cout<<pre_begin<<"  "<<pre_end<<" "<<in_begin<<" "<<in_end<<"!!"<<endl;
-    	node=new TreeNode(post[post_end]);
-    	if(in_begin==in_end)	
+    	if(pre_begin>10)
+    		return NULL;
+    	node=new TreeNode(pre[pre_begin]);
+    	if(pre_begin==pre_end)	
     		return node;
-		for(temp=post[post_end],i=0;i<=in_end&&in[i+in_begin]!=temp;i++);
+		for(temp=pre[pre_begin],i=0;i<=in_end&&in[i+in_begin]!=temp;i++);
 		//cout<<i<<"!!!"<<endl;
-		node->left=build(in,post,in_begin,in_begin+i-1,post_begin,post_begin+i-1);
-		node->right=build(in,post,in_begin+i+1,in_end,post_begin+i,post_end-1);
+		node->left=build(pre,in,pre_begin+1,pre_begin+i,in_begin,in_begin+i-1);
+		node->right=build(pre,in,pre_begin+i+1,pre_end,in_begin+i+1,in_end);
 		return node;
 	}
     void print()
     {
     	vector<int> X(11,0),Y(11,0);
-    	X[0]=8;
-    	X[1]=9;
+    	X[0]=1;
+    	X[1]=2;
     	X[2]=4;
-    	X[3]=10;
-    	X[4]=11;
+    	X[3]=8;
+    	X[4]=9;
     	X[5]=5;
-    	X[6]=2;
-    	X[7]=6;
-    	X[8]=7;
-    	X[9]=3;
-    	X[10]=1;
+    	X[6]=10;
+    	X[7]=11;
+    	X[8]=3;
+    	X[9]=6;
+    	X[10]=7;
     	
 		Y[0]=8;
     	Y[1]=4;
@@ -69,7 +69,7 @@ public:
     	Y[10]=7;
     	cout<<X.size()<<endl;
     	cout<<Y.size()<<endl;
-		TreeNode* A=buildTree(Y,X);
+		TreeNode* A=buildTree(X,Y);
 		trans(A);
 		cout<<endl;
 	}
