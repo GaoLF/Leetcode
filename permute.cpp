@@ -45,11 +45,8 @@ public:
     {
 		vector<vector <int> > x;
 		vector<int> y;
-		y.push_back(1);
-		y.push_back(2);
-		y.push_back(3);
-		y.push_back(4);
-		//x.push_back(y);
+		int XX[8]={1,2,3,4,5,6,7,8}; 
+		y=vector<int>(XX,XX+7);
 		x=permute(y);
 		for(int i=0;i<x.size();i++)
 		{
