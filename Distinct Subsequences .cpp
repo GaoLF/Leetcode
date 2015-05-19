@@ -12,19 +12,37 @@ typedef struct ListNode{
 } ListNode;
 class Solution {
 public:
-	unordered_map<int ,int> map;
-    int numDistinct(string s, string t) {
-    	int res;
-    	int i,j;
-    	int size1=s.length();
-    	int size2=t.length();
-    	int matrix[200][20]={0};
-    	for(i=0;i<size1;i++){
-    		for(j=0;j<size2;j++){
-    			if()
+	int numDistinct(string s, string t) {
+		int size1=s.length();
+		int size2=t.length();
+		int i,j,res=0;
+		if(!size2)
+			return 0;
+		int flag[30];
+		for(i=0;i<30;i++)
+			flag[i]=0;
+		for(i=0;i<size1;i++){
+			char temp=s[i];
+			for(j=0;j<size2;j++){
+				if(j>0&&flag[j]==0&&flag[j-1]==0)
+					break;
+
+			}
+			for(j=j-1;j>=0;j--){
+				if(temp==t[j]){
+					if(!j)
+						flag[j]++;
+					else 
+						flag[j]+=flag[j-1];
+				}
 			}
 		}
-    	/*
+		return flag[size2-1];
+	}
+	/*
+	unordered_map<int ,int> map;
+    int numDistinct(string s, string t) {
+    	
         int cur;
 		int i,j,res=0;
 		int size1=s.length();
@@ -45,17 +63,19 @@ public:
 					res+= numDistinct(s.substr(i+1,size1-i-1),t.substr(1,size2-1));
 			}
 		}
-		for(i=0;i<size1&&s[i]!=t[0];i++)
-			map.insert(make_pair((size1-i)<<3+(size2-j),res));
+		for(j=0;i<size1&&s[i]!=t[0];i++)
+			map.insert(make_pair((size1-i)<<3+(size2),res));
 		return res;
-		*/
-    }
+		
+    }*/
     void print()
     {
-		cout<<numDistinct("daacaedaceacabbaabdccdaaeaebacddadcaeaacadbceaecddecdeedcebcdacdaebccdeebcbdeaccabcecbeeaadbccbaeccbbdaeadecabbbedceaddcdeabbcdaeadcddedddcececbeeabcbecaeadddeddccbdbcdcbceabcacddbbcedebbcaccac","ceadbaa")<<endl;
-	//	cout<<numDistinct("rabbbitt","rbt")<<endl;
-	//	cout<<numDistinct("rabbbitt","rat")<<endl;
-	//	cout<<numDistinct("rabbbitt","ra")<<endl;
+	//	cout<<numDistinct("daacaedaceacabbaabdccdaaeaebacddadcaeaacadbceaecddecdeedcebcdacdaebccdeebcbdeaccabcecbeeaadbccbaeccbbdaeadecabbbedceaddcdeabbcdaeadcddedddcececbeeabcbecaeadddeddccbdbcdcbceabcacddbbcedebbcaccac","ceadbaa")<<endl;
+		cout<<numDistinct("rabbbitt","rbt")<<endl;
+		cout<<numDistinct("rabbbitt","rat")<<endl;
+		cout<<numDistinct("rabbbitt","ra")<<endl;
+		cout<<numDistinct("aaaaaaaaaaaaa","aaa")<<endl;
+		cout<<numDistinct("aaaa","aaa")<<endl;
 	}
 };
 int main()

@@ -14,25 +14,31 @@ public:
 //	static vector<int> count;
 //	static vector<int> sushu; 
     int countPrimes(int n) {
-        vector<int> vec;
-        int i,j,size,flag;
-        
-        if(n==0||n==1)
-            return 0;
-        vec.push_back(2);
-        for(i=3;i<=n;i++){
-            size=vec.size();
-            for(j=0,flag=0;j<size;j++){
-                if(i%vec[j]==0){
-                	flag=1;
-                	break;
-				}
-            }
-            if(!flag){
-            	vec.push_back(i);
+		int size=15000000;
+		int res=0;
+		int i,j;
+		bool flag[size];
+		
+		for(i=0;i<size;i++)
+			if(i%2)
+				flag[i]=1;
+			else
+				flag[i]=0;
+		for(i=2;i<sqrt(n);i+=1){
+			if(flag[i]){
+				for(j=i+i;j<=n;j+=i)
+					flag[j]=0;
 			}
-        }
-        return vec.size();
+		}
+		flag[2]=1;
+		for(i=2;i<=n;i++){
+			if(flag[i]){
+	//			cout<<i<<" ";
+				res++;
+			}
+		}
+	//	cout<<endl;
+		return res;
     }
     void print()
     {
