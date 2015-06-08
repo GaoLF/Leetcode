@@ -14,19 +14,18 @@ public:
     int rob(vector<int> &num) {
     	int *flag=(int*)malloc(sizeof(int)*num.size());
     	for(int i=0;i<num.size();i++)
-    		flag[i]=0;
+    		flag[i]=-1;
         return check(num,num.size(),flag);
     }
     int check(vector<int> &num,int i,int *flag){
     	if(i==0)
     		return 0;
     	if(i==1)
-    		return num[i-1];
-    	if(!flag[i])		
-			flag[i]=max(num[i-1]+check(num,i-2,flag),check(num,i-1,flag));
-		return flag[i];
+    		flag[i-1]=num[i-1];
+    	if(flag[i-1]<0)		
+			flag[i-1]=max(num[i-1]+check(num,i-2,flag),check(num,i-1,flag));
+		return flag[i-1];
 	} 
-
     void print()
     {
     	vector<int> A;
