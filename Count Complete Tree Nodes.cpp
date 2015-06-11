@@ -6,35 +6,25 @@
 #include<math.h>
 using namespace std ;
 
-struct TreeLinkNode {
+typedef struct TreeLinkNode {
    int val;
    TreeLinkNode *left, *right, *next;
    TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
-};
+}TreeNode;
  
 class Solution {
 public:
-	void connect(TreeLinkNode *root) {
-		if(!root)
-			return;
-		deal_left(root);
-		deal_right(root);
-	}
-	void deal_left(TreeLinkNode *root){
-		if(root->left){
-			root->left->next=root->right;
-		}
-		deal_left(root->left);
-		deal_right(root->right); 
-	}
-	void deal_right(TreeLinkNode *root){
-		if(root->left){
-			if(root->next&&root->next->left)
-				root->right->next=root->next->left;
-		}
-		deal_right(root->left);
-		deal_right(root->right);
-	}
+    int countNodes(TreeNode* root) {
+        int res=0;
+        if(!root)
+        	return 0;
+        int left=0,right=0;
+		for(TreeNode* temp=root;temp;temp=temp->left,left++);
+		for(TreeNode* temp=root;temp;temp=temp->right,right++);
+		if(left==right)
+			return pow(2,left)-1;
+        return 1+countNodes(root->left)+countNodes(root->right);
+    }
     void print()
     {
     	/*
@@ -47,19 +37,16 @@ public:
 		F=TreeLinkNode(6);
 		G=TreeLinkNode(7);
 		*/
-		TreeLinkNode A(1),B(2),C(3),D(4),E(5),F(6),G(7);
+		TreeNode A(1),B(2),C(3),D(4),E(5),F(6),G(7);
 		A.left=&B;
 		A.right=&C;
 		B.left=&D;
 		B.right=&E;
 		C.left=&F;
 		C.right=&G;
-		connect(&A);
-		cout<<B.next->val<<endl;
+		cout<<countNodes(&A)<<endl;
 		
-		cout<<D.next->val<<endl;
-		
-		cout<<E.next->val<<endl;
+		cout<<countNodes(NULL)<<endl;
 	}
 };
 int main()
