@@ -12,55 +12,75 @@ typedef struct ListNode{
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        int size,count=0,cur1,cur2,size1,size2,cur,cur3,f; 
-		int i=0,j=0,iflag=0,jflag=0,flag=0;
-		size1=nums1.size();
-		size2=nums2.size();
-		size=size1+size2;
+		int size1=nums1.size();
+		int size2=nums2.size();
+		int iter1=0,iter2=0;
+		int term=(size1+size2)/2;
+		int flag=(size1+size2)%2;//0Õû³ý£¬ 1ÓÐÓàÊý 
+		if(!(size1+size2))
+			return 0;
+			
+		if(!size1){
+			if(flag)
+				return nums2[term];
+			else
+				return (double)(nums2[term]+nums2[term-1])*0.5;
+		}
+		if(!size2){
+			if(flag)
+				return nums1[term];
+			else
+				return (double)(nums1[term]+nums1[term-1])*0.5;
+		}
 		
-		if(size1)
-			iflag=1;
-		else if(size2)
-			jflag=1;
 		while(1){
-			cur1=cur;
-			if(iflag){
-				if(i+1<size1)
-					cur2=nums1[i+1];
-				if(j<size2)
-					cur3=nums2[j];
-				if(i+1<size1&&(j+1>=size2||cur2<cur3))
-					cur=nums1[++i];
-				else{
-					cur=cur3;
-					swap(iflag,jflag);
-					f=1;
-				}	
-
-			}
-			else if(jflag){
-				if(j+1<size2)
-					cur2=nums2[j+1];
-				if(i<size1)
-					cur3=nums1[i];
-				if(j+1<size2&&(i+1>=size1||cur2<cur3))
-					cur=nums2[++j];
-				else{
-					cur=cur3;
-					swap(iflag,jflag);
+			if(iter1==size1){
+				swap(nums1,nums2);
+				swap(size1,size2);
+				swap(iter1,iter2);				
+			}		
+			if(iter2==size2){
+				int temp=term-size2;
+				
+				if(flag)
+					return nums1[temp];
+				else {
+					int foo;
+					if(size2&&(!temp))
+						foo=nums2[size2-1];
+					else if(!size2&&temp)
+						foo=nums1[temp-1];
+					else
+						foo=(max(nums1[temp-1],nums2[size2-1]));
+					return (double)(foo+nums1[temp])*0.5;
 				}
+					//cout<<temp<<" "<<iter1<<" "<<iter2<<endl;
 				
 			}
-			if(size==1)
-				return size1?nums1[0]:nums2[0];
-			if(count>=(size/2)){
-				if(size%2==0){
-					return (double)(cur1+cur)/2;
+			if(nums2[iter2]<nums1[iter1]){
+				swap(nums1,nums2);
+				swap(size1,size2);
+				swap(iter1,iter2);
+			}
+			for(;(iter1<size1)&&(nums1[iter1]<=nums2[iter2]);iter1++){
+				if(iter1+iter2>=term){
+					int temp;
+					if(flag)
+						return nums1[iter1];
+					else{
+						if(iter1&&iter2)
+							temp=max(nums1[iter1-1],nums2[iter2-1]);
+						else if(!iter1&&iter2)
+							temp=nums2[iter2-1];
+						else if(iter1&&(!iter2))
+							temp=nums1[iter1-1];
+					//	else	
+					//		temp=0;
+						return (double)(nums1[iter1]+temp)*0.5;
+					}
 				}
-				else
-					return cur;
 			}	
-		}	
+		}
     }
 
     void print()

@@ -11,18 +11,55 @@ typedef struct ListNode{
 } ListNode;
 class Solution {
 public:
-    int strStr(char *haystack, char *needle) {
+    int strStr(string haystack, string needle) {
         int i,j,h_size,n_size,flag;
-        for(i=0;haystack[i]!='\0';i++);
-        h_size=i;
-        for(i=0;needle[i]!='\0';i++);
-        n_size=i;
+        h_size=haystack.size();
+        n_size=needle.size();
         if(!n_size)
-        	return 0;
-        for(i=0;i<h_size;i++){
-        	for(j=0;j<n_size&&needle[j]==haystack[j+i];j++);
-        		if(j==n_size)
-        			return i;
+            return 0;
+        if(!h_size)
+            return -1;
+            
+        
+		vector<int> next(n_size,0);
+		next[0]=-1;
+        for(i=1,j=0;i<n_size;i++){
+			if(needle[i]==needle[j]){
+				
+				next[i]=j;
+				j++;
+			}
+			else if(needle[i]!=needle[j]){
+				next[i]=-1;
+				j=0;
+			}
+		}
+		//for(i=0;i<next.size();i++)
+		//	cout<<next[i]<<" ";
+	//	cout<<endl;
+		for(i=0,j=0;i<h_size;){
+			if(haystack[i]==needle[j]){
+				if(j==n_size-1)
+					return i-j;
+				else{
+					i++;
+					j++;
+				}
+				//cout<<haystack[i]<<" "<<i<<" "<<j<<endl;
+			}
+			else{
+				if(j==0||next[j-1]==-1){
+					j=0;
+					if(haystack[i]==needle[0]){
+					//	j++;
+					}
+					else
+						i++;		
+				}
+				else{
+					j=next[j-1]+1;
+				}
+			}
 		}
 		return -1;
     }
@@ -31,7 +68,11 @@ public:
     {
 		char A[14]="AVVVVAVVVCAVC";
 		char B[3]="VC";
-		cout<<strStr(A,B)<<endl; 
+		cout<<strStr("bbababbaa", "bbabba")<<endl;
+		cout<<strStr("babba", "bbb")<<endl;
+		cout<<strStr("mississippi", "issip")<<endl;
+		cout<<strStr("mississippi", "pi")<<endl;
+	    cout<<strStr(A,B)<<endl; 
 	}
 };
 int main()
