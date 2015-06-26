@@ -17,7 +17,7 @@ public:
 		return res;
     }
     void check(string s1,string s2,int &res){
-    	cout<<s1<<" "<<s2<<endl;
+    //	cout<<s1<<" "<<s2<<endl;
     	int len1=s1.length();
     	int len2=s2.length();
     	int i;
