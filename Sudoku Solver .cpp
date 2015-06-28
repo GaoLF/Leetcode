@@ -11,14 +11,14 @@ typedef struct ListNode{
 } ListNode;
 class Solution {
 public:
-	int xx;
+//	int xx;
     void solveSudoku(vector<vector<char> > &board) {
         int i,j,m,sum,count;
         char cur;
         xx=0;
 		while(1){
 			for(i=0,count=0;i<9;i++){
-				cout<<i<<":"<<endl;
+			//	cout<<i<<":"<<endl;
 				for(j=0;j<9;j++){
 					if(board[i][j]=='.'){
 						count+=1;
